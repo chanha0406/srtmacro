@@ -1,14 +1,17 @@
 function injectJs(srcFile) {
-    var scr = document.createElement('script');
-    scr.src = srcFile;
-    document.getElementsByTagName('head')[0].appendChild(scr);
+	var scr = document.createElement('script');
+	scr.src = srcFile;
+	document.getElementsByTagName('head')[0].appendChild(scr);
 }
 
-var dsturl1 = "https://etk.srail.kr/hpg/hra/01/selectScheduleList.do?pageId=TK0101010000";
+const dsturl1 = "https://etk.srail.kr/hpg/hra/01/selectScheduleList.do?pageId=TK0101010000";
+const LOGIN_PAGE_URI = 'https://etk.srail.kr/cmc/01/selectLoginForm.do?pageId=TK0701000000';
+
+const isLogin = () => !!document.querySelectorAll(".login_wrap.val_m.fl_r > span").length;
 
 if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 
-	$(document).ready(function() {
+	$(document).ready(function () {
 		injectJs(chrome.extension.getURL('inject.js'));
 
 		var coachSelected = JSON.parse(sessionStorage.getItem('coachSelected'));
@@ -18,6 +21,13 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 		console.log("coach:" + coachSelected);
 		console.log("first:" + firstSelected);
 
+		if (!isLogin()) {
+			if (confirm("로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?")) {
+				location.href = LOGIN_PAGE_URI;
+			}
+			return;
+		}
+
 		if (sessionStorage.getItem('macro') == "true") {
 			$("#search_top_tag").append('<input type="submit" value="매크로 정지" style="font-size: 16px; background-color: orange; color: white;" class="btn_large wx200 val_m corner" onclick="macrostop();">');
 		} else {
@@ -25,12 +35,12 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 		}
 
 		$("<style>")
-    .prop("type", "text/css")
-    .html("\
+			.prop("type", "text/css")
+			.html("\
     .search-form form .button input, .search-form form .button a img{\
     	vertical-align: middle;\
     }")
-    .appendTo("body");
+			.appendTo("body");
 
 		// Inserts the macro button into the table.
 		if ($("#search-list").length != 0) {
@@ -42,13 +52,13 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 				if (coach.children().length > 0) {
 					coach.append($("<p class='p5'></p>"));
 					var checkbox = $("<label></label>").html('<input type="checkbox" name="checkbox" class="coachMacro" value="' + i + '"> 매크로');
-					checkbox.children('input').prop('checked', coachSelected.indexOf(i+"") > -1);
+					checkbox.children('input').prop('checked', coachSelected.indexOf(i + "") > -1);
 					coach.append(checkbox);
 				}
 				if (first.children().length > 0) {
 					first.append($("<p class='p5'></p>"));
 					var checkbox = $("<label></label>").html('<input type="checkbox" name="checkbox" class="firstMacro" value="' + i + '"> 매크로');
-					checkbox.children('input').prop('checked', firstSelected.indexOf(i+"") > -1);
+					checkbox.children('input').prop('checked', firstSelected.indexOf(i + "") > -1);
 					first.append(checkbox);
 				}
 			}
@@ -74,7 +84,7 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 					var first = $(columns[5]);
 					var coach = $(columns[6]);
 
-					if (coachSelected.indexOf(i+"") > -1) {
+					if (coachSelected.indexOf(i + "") > -1) {
 						var coachSpecials = coach.children("a");
 						if (coachSpecials.length != 0) {
 							for (j = 0; j < coachSpecials.length; j++) {
@@ -89,7 +99,7 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 						}
 					}
 
-					if (firstSelected.indexOf(i+"") > -1) {
+					if (firstSelected.indexOf(i + "") > -1) {
 						var firstSpecials = first.children("a");
 						if (firstSpecials.length != 0) {
 							for (j = 0; j < firstSpecials.length; j++) {
@@ -116,10 +126,12 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 					sessionStorage.removeItem('psgInfoPerPrnb3');
 					sessionStorage.removeItem('locSeatAttCd1');
 					sessionStorage.removeItem('rqSeatAttCd1');
-					chrome.extension.sendMessage({type: 'playSound'}, function(data) { });
+					chrome.extension.sendMessage({
+						type: 'playSound'
+					}, function (data) {});
 				} else {
-					setTimeout(function() { 
-					location.reload();
+					setTimeout(function () {
+						location.reload();
 					}, 1000);
 				}
 			} else {

@@ -1,10 +1,6 @@
-window.showModalDialog = window.showModalDialog || function(url, arg, opt) {
+window.showModalDialog = window.showModalDialog || function (url, arg, opt) {
 	window.open(url, arg, opt);
 };
-
-const LOGIN_PAGE_URI = 'https://etk.srail.kr/cmc/01/selectLoginForm.do?pageId=TK0701000000';
-
-const isLogin = () => !!document.querySelectorAll(".login_wrap.val_m.fl_r > span").length;
 
 function macro() {
 	coachSelected = [].map.call(document.querySelectorAll('.coachMacro:checked'), function (select) {
@@ -13,13 +9,6 @@ function macro() {
 	firstSelected = [].map.call(document.querySelectorAll('.firstMacro:checked'), function (select) {
 		return select.value;
 	});
-
-	if (!isLogin()) {
-		if (confirm("로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?")) {
-		  location.href = LOGIN_PAGE_URI;
-		}
-		return;
-	  }
 
 	if (coachSelected.length == 0 && firstSelected.length == 0) {
 		alert("매크로를 실행하기 위해서는 예매하기 위한 열차 1개 이상을 선택하십시오.");
@@ -41,6 +30,7 @@ function macro() {
 
 		location.reload();
 	}
+
 }
 
 function macrostop() {
