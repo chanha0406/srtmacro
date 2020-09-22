@@ -21,8 +21,8 @@
   "web_accessible_resources": [
     "inject.js", "images/btn_start.png", "images/btn_stop.png", "assets/tada.mp3"
   ],
-  "options_ui": {
-    "page": "options.html",
-	"chrome_style": true
+  "browser_action": {
+    "default_title": "telegram",
+    "default_popup": "popup.html"
   }
 }

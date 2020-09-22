@@ -11,22 +11,18 @@ function playSound() {
 	audio.play();
 }
 
-function sendTelegramMessage() {
-	var botToken = localStorage['botToken'];
-	var chatId = localStorage['chatId'];
-	var msg = encodeURI('Macro has been stopped. Please check your reservation status.');
-	if (botToken != undefined && chatId != undefined) {
-		var url = 'https://api.telegram.org/bot' + botToken + '/sendmessage?chat_id=' + chatId + '&text=' + msg;
-		
-		var xmlhttp = new XMLHttpRequest();
-		xmlhttp.onreadystatechange=function() {
-			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-				var response = xmlhttp.responseText; //if you need to do something with the returned value
-			}
-		}
-		xmlhttp.open('GET', url, true);
-		xmlhttp.send();
-	}
+const sendTelegramMessage = () => {
+    const botToken = localStorage.getItem('SRT_MACRO::bot-token');
+    const chatId = localStorage.getItem('SRT_MACRO::chat-id');
+
+    if (!botToken || !chatId) {
+        return;
+    }
+
+    const msg = encodeURI('예약을 시도하였습니다. 예약을 확인해주세요.');
+    const url = `https://api.telegram.org/bot${botToken}/sendmessage?chat_id=${chatId}&text=${msg}`;
+
+    fetch(url);
 }
 
 chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
