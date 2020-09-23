@@ -10,7 +10,12 @@ function macro() {
 		return select.value;
 	});
 
-	if (coachSelected.length == 0 && firstSelected.length == 0) {
+	waitSelected = [].map.call(document.querySelectorAll('.waitMacro:checked'), function (select) {
+		return select.value;
+	});
+
+
+	if (coachSelected.length == 0 && firstSelected.length == 0 && waitSelected.length == 0) {
 		alert("매크로를 실행하기 위해서는 예매하기 위한 열차 1개 이상을 선택하십시오.");
 	} else {
 		alert("매크로를 시작합니다.\n트럼펫 소리가 나면 바로 결제를 해주셔야 합니다.");
@@ -18,6 +23,7 @@ function macro() {
 		sessionStorage.setItem('macro', true);
 		sessionStorage.setItem('coachSelected', JSON.stringify(coachSelected));
 		sessionStorage.setItem('firstSelected', JSON.stringify(firstSelected));
+		sessionStorage.setItem('waitSelected', JSON.stringify(waitSelected));
 
 		// Stores user preferences.
 		sessionStorage.setItem('psgInfoPerPrnb1', document.getElementsByName('psgInfoPerPrnb1')[0].value);
@@ -39,6 +45,7 @@ function macrostop() {
 	sessionStorage.removeItem('macro');
 	sessionStorage.removeItem('coachSelected');
 	sessionStorage.removeItem('firstSelected');
+	sessionStorage.removeItem('waitSelected');
 	sessionStorage.removeItem('psgInfoPerPrnb1');
 	sessionStorage.removeItem('psgInfoPerPrnb5');
 	sessionStorage.removeItem('psgInfoPerPrnb4');

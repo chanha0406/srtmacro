@@ -16,10 +16,15 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 
 		var coachSelected = JSON.parse(sessionStorage.getItem('coachSelected'));
 		var firstSelected = JSON.parse(sessionStorage.getItem('firstSelected'));
+		var waitSelected = JSON.parse(sessionStorage.getItem('waitSelected'));
+
 		if (coachSelected == null) coachSelected = [];
 		if (firstSelected == null) firstSelected = [];
+		if (waitSelected == null) waitSelected = [];
+
 		console.log("coach:" + coachSelected);
 		console.log("first:" + firstSelected);
+		console.log("wait:" + waitSelected);
 
 		if (!isLogin()) {
 			if (confirm("로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?")) {
@@ -49,6 +54,7 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 				var columns = $(rows[i]).children('td');
 				var first = $(columns[5]);
 				var coach = $(columns[6]);
+				var wait = $(columns[7]);
 				if (coach.children().length > 0) {
 					coach.append($("<p class='p5'></p>"));
 					var checkbox = $("<label></label>").html('<input type="checkbox" name="checkbox" class="coachMacro" value="' + i + '"> 매크로');
@@ -60,6 +66,12 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 					var checkbox = $("<label></label>").html('<input type="checkbox" name="checkbox" class="firstMacro" value="' + i + '"> 매크로');
 					checkbox.children('input').prop('checked', firstSelected.indexOf(i + "") > -1);
 					first.append(checkbox);
+				}
+				if (wait.children().length > 0) {
+					wait.append($("<p class='p5'></p>"));
+					var checkbox = $("<label></label>").html('<input type="checkbox" name="checkbox" class="waitMacro" value="' + i + '"> 매크로');
+					checkbox.children('input').prop('checked', waitSelected.indexOf(i + "") > -1);
+					wait.append(checkbox);
 				}
 			}
 		}
@@ -83,6 +95,7 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 
 					var first = $(columns[5]);
 					var coach = $(columns[6]);
+					var wait = $(columns[7]);
 
 					if (coachSelected.indexOf(i + "") > -1) {
 						var coachSpecials = coach.children("a");
@@ -113,12 +126,28 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1) {
 							if (succeed == true) break;
 						}
 					}
+
+					if (waitSelected.indexOf(i + "") > -1) {
+						var waitSpecials = wait.children("a");
+						if (waitSpecials.length != 0) {
+							for (j = 0; j < waitSpecials.length; j++) {
+								name = $(waitSpecials[j]).attr('class');
+								if (name == 'btn_small btn_burgundy_dark val_m wx90') {
+									$(waitSpecials[0])[0].click();
+									succeed = true;
+									break;
+								}
+							}
+							if (succeed == true) break;
+						}
+					}
 				}
 
 				if (succeed == true) {
 					sessionStorage.removeItem('macro');
 					sessionStorage.removeItem('coachSelected');
 					sessionStorage.removeItem('firstSelected');
+					sessionStorage.removeItem('waitSelected');
 					sessionStorage.removeItem('psgInfoPerPrnb1');
 					sessionStorage.removeItem('psgInfoPerPrnb5');
 					sessionStorage.removeItem('psgInfoPerPrnb4');
