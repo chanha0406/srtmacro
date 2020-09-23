@@ -5,11 +5,13 @@ function injectJs(srcFile) {
 }
 
 const dsturl1 = "https://etk.srail.kr/hpg/hra/01/selectScheduleList.do?pageId=TK0101010000";
+const dsturl2 = "https://etk.srail.kr/hpg/hra/01/selectGroupScheduleList.do?pageId=TK0101020000"
+const dsturl3 = "https://etk.srail.kr/hpg/hra/01/selectConditionGoodsScheduleList.do?pageId=TK0101060000"
 const LOGIN_PAGE_URI = 'https://etk.srail.kr/cmc/01/selectLoginForm.do?pageId=TK0701000000';
 
 const isLogin = () => !!document.querySelectorAll(".login_wrap.val_m.fl_r > span").length;
 
-if (document.URL.substring(0, dsturl1.length) == dsturl1) {
+if (document.URL.substring(0, dsturl1.length) == dsturl1 || document.URL.substring(0, dsturl2.length) == dsturl2 || document.URL.substring(0, dsturl3.length) == dsturl3) {
 
 	$(document).ready(function () {
 		injectJs(chrome.extension.getURL('inject.js'));
