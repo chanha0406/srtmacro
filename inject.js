@@ -34,7 +34,7 @@ function macro() {
 		sessionStorage.setItem('locSeatAttCd1', document.getElementsByName('locSeatAttCd1')[0].value);
 		sessionStorage.setItem('rqSeatAttCd1', document.getElementsByName('rqSeatAttCd1')[0].value);
 
-		document.querySelector('input[value="조회하기"]').click();
+		reload();
 	}
 
 }
@@ -54,5 +54,10 @@ function macrostop() {
 	sessionStorage.removeItem('locSeatAttCd1');
 	sessionStorage.removeItem('rqSeatAttCd1');
 
+	reload();
+}
+
+function reload() {
+	document.querySelector("#search-list").remove()
 	document.querySelector('input[value="조회하기"]').click();
 }

@@ -185,8 +185,10 @@ if (document.URL.substring(0, dsturl1.length) == dsturl1 || document.URL.substri
 							type: 'playSound'
 						}, function (data) {});
 					} else {
-						$("#search-list").remove();
-						document.querySelector('input[value="조회하기"]').click();
+						setTimeout(() => {
+							document.querySelector("#search-list").remove()
+							document.querySelector('input[value="조회하기"]').click();
+						}, 500);
 					}
 				} else {
 					history.go(-1);
